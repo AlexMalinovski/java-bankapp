@@ -1,0 +1,23 @@
+databaseChangeLog:
+  #Table
+  - changeSet:
+      id: 000000000001-create-table-rates
+      author: Aleksey Malinovsky
+      changes:
+        - createTable:
+            tableName: rates
+            schemaName: exchange_service
+            columns:
+              - column: { name: on_time, type: DATETIME, remarks: 'Время', constraints: { nullable: false } }
+              - column: { name: currency, type: varchar(5), remarks: 'Валюта', constraints: { nullable: false } }
+              - column: { name: val, type: DECIMAL, remarks: 'Котировка', constraints: { nullable: false } }
+
+  - changeSet:
+      id: 000000000002-create-primary-key
+      author: Aleksey Malinovsky
+      changes:
+        - addPrimaryKey:
+            tableName: rates
+            schemaName: exchange_service
+            columnNames: on_time, currency
+            constraintName: pk_rates_on_time_currency

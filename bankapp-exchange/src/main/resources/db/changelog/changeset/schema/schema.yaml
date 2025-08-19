@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000000000000-create-schema-exchange_service
+      author: Aleksey Malinovsky
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS exchange_service

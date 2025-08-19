@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: exchange-service
+  cloud:
+    discovery:
+      enabled: false # Disables Consul Discovery Client
+    consul:
+      enabled: false
+      config:
+        enabled: false # Disables Consul Config
+
+chassis:
+  servicePort: 8090
+  oauthClientId: bankapp-srv
+  oauthClientSecret: bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+  oauthIssuerUri: "http://localhost:8080/realms/bankapp"
