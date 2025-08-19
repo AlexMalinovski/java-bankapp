@@ -1,0 +1,30 @@
+package ru.practicum.bankapp.chassis.service;
+
+import ru.practicum.bankapp.lib.dto.accounts.AccountsChangeResult;
+import ru.practicum.bankapp.lib.dto.accounts.PasswordChangeDto;
+import ru.practicum.bankapp.lib.dto.accounts.SignUpDto;
+import ru.practicum.bankapp.lib.dto.accounts.TransferTransactionDto;
+import ru.practicum.bankapp.lib.dto.accounts.UserAccountsDto;
+import ru.practicum.bankapp.lib.dto.accounts.UserProfileDto;
+import ru.practicum.bankapp.lib.dto.accounts.UserShortDto;
+import ru.practicum.bankapp.lib.dto.cash.CashOperationDto;
+
+import java.util.List;
+
+public interface AccountsClient {
+    void changeUserPassword(String login, PasswordChangeDto passwordChangeDto);
+
+    UserAccountsDto getUserAccounts(String login);
+
+    AccountsChangeResult changeUserAccounts(String login, UserAccountsDto userAccountsDto);
+
+    void runCashTransaction(String login, CashOperationDto cashOperationDto);
+
+    void runTransferTransaction(String login, TransferTransactionDto transactionDto);
+
+    UserProfileDto getUserProfile(String login);
+
+    List<UserShortDto> findAllUsers();
+
+    void registerNewUser(SignUpDto signUpDto);
+}

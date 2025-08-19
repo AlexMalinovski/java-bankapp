@@ -1,0 +1,5 @@
+ru.practicum.bankapp.chassis.ApiExceptionHandlerAutoConfig
+ru.practicum.bankapp.chassis.SecurityAutoConfig
+ru.practicum.bankapp.chassis.RestClientAutoConfig
+ru.practicum.bankapp.chassis.PreferencesAutoConfig
+ru.practicum.bankapp.chassis.AppAutoConfig
