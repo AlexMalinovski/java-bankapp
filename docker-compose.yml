@@ -1,0 +1,251 @@
+version: '3.8'
+services:
+  bankapp-gateway:
+    build: ./bankapp-gateway
+    image: bankapp-gateway
+    container_name: bankapp-gateway
+    restart: always
+    ports:
+      - "9000:9000"
+    depends_on:
+      - consul-srv
+    environment:
+      - GATEWAY_PORT=9000
+      - GATEWAY_SERVICE=gateway
+      - NOTIFICATION_SERVICE=notifications-service
+      - EXCHANGE_GEN_SERVICE=exchange-gen-service
+      - EXCHANGE_SERVICE=exchange-service
+      - CASH_SERVICE=cash-service
+      - TRANSFER_SERVICE=transfer-service
+      - ACCOUNTS_SERVICE=accounts-service
+      - BLOCKER_SERVICE=blocker-service
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-accounts:
+    build: ./bankapp-accounts
+    image: bankapp-accounts
+    container_name: bankapp-accounts
+    restart: always
+    ports:
+      - "8090:8090"
+    depends_on:
+      - consul-srv
+      - postgres-db
+      - keycloak-srv
+      - bankapp-notifications
+    environment:
+      - ACCOUNTS_SERVICE=accounts-service
+      - ACCOUNTS_PORT=8090
+      - ACCOUNTS_OAUTH_ID=bankapp-srv
+      - ACCOUNTS_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - POSTGRES_HOST=postgres-db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=bankapp
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-blocker:
+    build: ./bankapp-blocker
+    image: bankapp-blocker
+    container_name: bankapp-blocker
+    restart: always
+    ports:
+      - "8091:8091"
+    depends_on:
+      - consul-srv
+      - keycloak-srv
+      - bankapp-gateway
+    environment:
+      - BLOCKER_SERVICE=blocker-service
+      - BLOCKER_PORT=8091
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - BLOCKER_OAUTH_ID=bankapp-srv
+      - BLOCKER_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-cash:
+    build: ./bankapp-cash
+    image: bankapp-cash
+    container_name: bankapp-cash
+    restart: always
+    ports:
+      - "8092:8092"
+    depends_on:
+      - consul-srv
+      - keycloak-srv
+      - bankapp-accounts
+      - bankapp-blocker
+      - bankapp-notifications
+    environment:
+      - CASH_SERVICE=cash-service
+      - CASH_PORT=8092
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - CASH_OAUTH_ID=bankapp-srv
+      - CASH_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-exchange:
+    build: ./bankapp-exchange
+    image: bankapp-exchange
+    container_name: bankapp-exchange
+    restart: always
+    ports:
+      - "8093:8093"
+    depends_on:
+      - consul-srv
+      - postgres-db
+      - keycloak-srv
+      - bankapp-gateway
+    environment:
+      - EXCHANGE_SERVICE=exchange-service
+      - EXCHANGE_PORT=8093
+      - EXCHANGE_OAUTH_ID=bankapp-srv
+      - EXCHANGE_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - POSTGRES_HOST=postgres-db
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=bankapp
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-exchange-gen:
+    build: ./bankapp-exchange-gen
+    image: bankapp-exchange-gen
+    container_name: bankapp-exchange-gen
+    restart: always
+    ports:
+      - "8094:8094"
+    depends_on:
+      - consul-srv
+      - keycloak-srv
+      - bankapp-exchange
+    environment:
+      - EXCHANGE_GEN_SERVICE=exchange-gen-service
+      - EXCHANGE_GEN_PORT=8094
+      - EXCHANGE_GEN_OAUTH_ID=bankapp-srv
+      - EXCHANGE_GEN_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-notifications:
+    build: ./bankapp-notifications
+    image: bankapp-notifications
+    container_name: bankapp-notifications
+    restart: always
+    ports:
+      - "8095:8095"
+    depends_on:
+      - consul-srv
+      - keycloak-srv
+      - bankapp-gateway
+    environment:
+      - NOTIFICATION_SERVICE=notifications-service
+      - NOTIFICATION_PORT=8095
+      - NOTIFICATION_OAUTH_ID=bankapp-srv
+      - NOTIFICATION_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-transfer:
+    build: ./bankapp-transfer
+    image: bankapp-transfer
+    container_name: bankapp-transfer
+    restart: always
+    ports:
+      - "8096:8096"
+    depends_on:
+      - consul-srv
+      - keycloak-srv
+      - bankapp-accounts
+      - bankapp-blocker
+      - bankapp-notifications
+      - bankapp-exchange
+    environment:
+      - TRANSFER_SERVICE=transfer-service
+      - TRANSFER_PORT=8096
+      - TRANSFER_OAUTH_ID=bankapp-srv
+      - TRANSFER_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  bankapp-ui:
+    build: ./bankapp-ui
+    image: bankapp-ui
+    container_name: bankapp-ui
+    restart: always
+    ports:
+      - "8097:8097"
+    depends_on:
+      - consul-srv
+      - keycloak-srv
+      - bankapp-accounts
+      - bankapp-transfer
+      - bankapp-cash
+    environment:
+      - UI_SERVICE=ui-service
+      - UI_PORT=8097
+      - UI_OAUTH_ID=bankapp-srv
+      - UI_OAUTH_SECRET=bF9xLjmjfaWDCO3CyuoSZkVBIV8bODL3
+      - KEYCLOAK_HOST=keycloak-srv
+      - KEYCLOAK_PORT=8080
+      - KEYCLOAK_REALM=bankapp
+      - CONSUL_PORT=8500
+      - CONSUL_HOST=consul-srv
+
+  postgres-db:
+    image: postgres:14-alpine
+    container_name: postgres-db
+    environment:
+      - TZ=Europe/Moscow
+      - POSTGRES_DB=bankapp
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+
+  consul-srv:
+    image: hashicorp/consul:1.17
+    container_name: consul-srv
+    ports:
+      - 8500:8500
+      - 8300:8300
+      - 8301:8301
+      - 8302:8302
+      - 8600:8600
+      - "8600:8600/udp"
+    command: "agent -dev -ui -client 0.0.0.0"
+
+  keycloak-srv:
+    image: quay.io/keycloak/keycloak:26.1.3
+    container_name: keycloak-srv
+    ports:
+      - 8080:8080
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command: "-v start-dev --import-realm"
