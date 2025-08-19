@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <title>Регистрация</title>
+</head>
+
+<body>
+<a href="/main" style="float:right;">
+    <b>На главную &plus;</b>
+</a>
+<form th:action="${'/logout'}" method="post" enctype="utf8">
+<table style="width:30%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
+    <tr>
+        <td colspan="2">
+            <p>Точно хотите выйти?</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td style="text-align:right" colspan="2">
+            <button>Да</button>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+
+</html>
