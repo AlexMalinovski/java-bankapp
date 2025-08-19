@@ -1,12 +1,8 @@
 package ru.practicum.bankapp.accounts;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-@SpringBootTest
-class AccountsAppTest {
+class AccountsAppTest extends AbstractIntegrationDataTest {
 
     @Test
     void loadContext() {

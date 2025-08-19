@@ -1,0 +1,14 @@
+databaseChangeLog:
+  #Table
+  - changeSet:
+      id: 000000000001-create-table-rates
+      author: Aleksey Malinovsky
+      changes:
+        - createTable:
+            tableName: users
+            schemaName: accounts_service
+            columns:
+              - column: { name: login, type: varchar(32), remarks: 'Логин', constraints: { primaryKey: true, nullable: false, primaryKeyName: pk_users} }
+              - column: { name: password, type: varchar(200), remarks: 'Пароль', constraints: { nullable: false } }
+              - column: { name: name, type: varchar(200), remarks: 'Пароль', constraints: { nullable: false } }
+              - column: { name: birth_day, type: date, remarks: 'Пароль', constraints: { nullable: false } }

@@ -1,6 +1,35 @@
-server:
-  port: 8090
-
 spring:
   application:
-    name: accounts-service
+    name: ${ACCOUNTS_SERVICE}
+  liquibase:
+    default-schema: public
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+
+  config:
+    import: "optional:consul:"
+  cloud:
+    consul:
+      host: ${CONSUL_HOST}          # Адрес Consul (по умолчанию localhost)
+      port: ${CONSUL_PORT}               # Порт Consul (8500 по умолчанию)
+      discovery:
+        register-health-check: false
+      config:
+        enabled: true            # Включаем Consul Config для внешней конфигурации
+        prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
+        defaultContext: application  # Контекст по умолчанию
+
+chassis:
+  servicePort: ${ACCOUNTS_PORT}
+  oauthClientId: ${ACCOUNTS_OAUTH_ID}
+  oauthClientSecret: ${ACCOUNTS_OAUTH_SECRET}
+  oauthIssuerUri: "http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}"

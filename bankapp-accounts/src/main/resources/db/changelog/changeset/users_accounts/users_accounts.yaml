@@ -1,0 +1,46 @@
+databaseChangeLog:
+  #Table
+  - changeSet:
+      id: 000000000001-create-table-users_accounts
+      author: Aleksey Malinovsky
+      changes:
+        - createTable:
+            tableName: users_accounts
+            schemaName: accounts_service
+            columns:
+              - column: { name: id, type: bigint, autoIncrement: true, remarks: 'Номер счёта', constraints: { primaryKey: true, nullable: false, primaryKeyName: pk_items } }
+              - column: { name: user_login, type: varchar(32), remarks: 'Владелец', constraints: { nullable: false } }
+              - column: { name: currency, type: varchar(5), remarks: 'Валюта', constraints: { nullable: false } }
+              - column: { name: value_sum, type: bigint, remarks: 'Сумма', constraints: { nullable: false } }
+              - column: { name: active, type: boolean, remarks: 'Счёт активен', constraints: { nullable: false } }
+
+  - changeSet:
+      id: 000000000002-create-index-user_login_currency
+      author: Aleksey Malinovsky
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: user_login
+              - column:
+                  name: currency
+            indexName: idx_user_login_currency
+            tableName: users_accounts
+            schemaName: accounts_service
+            unique: true
+
+  - changeSet:
+      id: 000000000003-add-foreign-key-user_login
+      author: Aleksey Malinovsky
+      changes:
+        - addForeignKeyConstraint:
+            baseTableSchemaName: accounts_service
+            referencedTableSchemaName: accounts_service
+            baseColumnNames: user_login
+            baseTableName: users_accounts
+            constraintName: fk_users_accounts_user_login
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            referencedColumnNames: login
+            referencedTableName: users
+            validate: true
