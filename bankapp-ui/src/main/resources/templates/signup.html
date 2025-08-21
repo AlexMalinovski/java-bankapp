@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+    <title>Регистрация</title>
+</head>
+
+<body>
+<a href="/login" style="float:right;">
+    <b>ВХОД &plus;</b>
+</a>
+<form th:action="${'/signup'}" method="post" th:object="${signUpDto}" enctype="utf8">
+<table style="width:30%;margin-left:auto;margin-right:auto;border-radius:2%;padding:10px;background-color:whitesmoke;">
+    <tr>
+        <td colspan="2">
+            <span style="color:red;font-weight:bold;">*</span> Все поля обязательны для заполнения
+        </td>
+    </tr>
+    <tr th:if="${signUpResult.success() == false}">
+        <td style="color:red;" th:text="${signUpResult.error()}" colspan="2"/>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">Логин</td>
+        <td>
+            <input name="login" type="text" th:field="*{login}" style="width:100%; text-transform:lowercase" required/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p class="validationError" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">Пароль</td>
+        <td>
+            <input name="password" type="password" th:field="*{password}" style="width:100%" required/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p class="validationError" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">Повторите пароль</td>
+        <td>
+            <input name="confirm_password" type="password" th:field="*{passwordConfirm}" style="width:100%" required/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p class="validationError" th:if="${#fields.hasErrors('passwordConfirmed')}" th:errors="*{passwordConfirmed}"></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">Фамилия Имя</td>
+        <td>
+            <input name="name" type="text" th:field="*{name}" style="width:100%" required/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p class="validationError" th:if="${#fields.hasErrors('name')}" th:errors="*{name}" ></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">Дата рождения </td>
+        <td>
+            <input name="birthdate" type="date" th:field="*{birthdate}" style="width:100%" required/>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p class="validationError" th:if="${#fields.hasErrors('birthdate')}" th:errors="*{birthdate}" ></p>
+        </td>
+    </tr>
+    <tr>
+        <td style="text-align:right" colspan="2">
+            <button>Зарегистрироваться</button>
+        </td>
+    </tr>
+</table>
+</form>
+</body>
+
+</html>

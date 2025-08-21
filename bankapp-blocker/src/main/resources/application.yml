@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: ${BLOCKER_SERVICE}
+  config:
+    import: "optional:consul:"
+  cloud:
+    consul:
+      host: ${CONSUL_HOST}          # Адрес Consul (по умолчанию localhost)
+      port: ${CONSUL_PORT}               # Порт Consul (8500 по умолчанию)
+      discovery:
+        register-health-check: false
+      config:
+        enabled: true            # Включаем Consul Config для внешней конфигурации
+        prefix: config           # Префикс в KV-хранилище Consul (по умолчанию "config")
+        defaultContext: application  # Контекст по умолчанию
+
+chassis:
+  servicePort: ${BLOCKER_PORT}
+  oauthClientId: ${BLOCKER_OAUTH_ID}
+  oauthClientSecret: ${BLOCKER_OAUTH_SECRET}
+  oauthIssuerUri: "http://${KEYCLOAK_HOST}:${KEYCLOAK_PORT}/realms/${KEYCLOAK_REALM}"

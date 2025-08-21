@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - changeSet:
+      id: 000000000000-create-schema-accounts_service
+      author: Aleksey Malinovsky
+      changes:
+        - sql:
+            sql: CREATE SCHEMA IF NOT EXISTS accounts_service

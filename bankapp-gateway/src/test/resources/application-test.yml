@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: gateway
+  cloud:
+    consul:
+      enabled: false
+      config:
+        enabled: false
+    gateway:
+      server:
+        webflux:
+          discovery:
+            locator:
+              enabled: true
+          routes:
+            - id: notification-service
+              uri: lb://${bank.notificationService}       # адрес сервиса B
+              predicates:
+                - Path=/notification/**                # перехватываем путь
+              filters:
+                - RewritePath=/notification/?(?<segment>.*), /$\{segment}
+
+            - id: exchange-gen-service
+              uri: lb://${bank.exchangeGenService}       # адрес сервиса B
+              predicates:
+                - Path=/exchange-gen/**                # перехватываем путь
+              filters:
+                - RewritePath=/exchange-gen/?(?<segment>.*), /$\{segment}
+
+            - id: exchange-service
+              uri: lb://${bank.exchangeService}       # адрес сервиса B
+              predicates:
+                - Path=/exchange/**                # перехватываем путь
+              filters:
+                - RewritePath=/exchange/?(?<segment>.*), /$\{segment}
+
+            - id: cash-service
+              uri: lb://${bank.cashService}       # адрес сервиса B
+              predicates:
+                - Path=/cash/**                # перехватываем путь
+              filters:
+                - RewritePath=/cash/?(?<segment>.*), /$\{segment}
+
+            - id: transfer-service
+              uri: lb://${bank.transferService}       # адрес сервиса B
+              predicates:
+                - Path=/transfer/**                # перехватываем путь
+              filters:
+                - RewritePath=/transfer/?(?<segment>.*), /$\{segment}
+
+            - id: accounts-service
+              uri: lb://${bank.accountsService}       # адрес сервиса B
+              predicates:
+                - Path=/accounts/**                # перехватываем путь
+              filters:
+                - RewritePath=/accounts/?(?<segment>.*), /$\{segment}
+
+            - id: blocker-service
+              uri: lb://${bank.blockerService}       # адрес сервиса B
+              predicates:
+                - Path=/blocker/**                # перехватываем путь
+              filters:
+                - RewritePath=/blocker/?(?<segment>.*), /$\{segment}
+
+server:
+  port: 9000

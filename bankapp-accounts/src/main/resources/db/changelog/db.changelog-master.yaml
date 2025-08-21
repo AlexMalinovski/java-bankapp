@@ -1,0 +1,10 @@
+databaseChangeLog:
+
+  #schema
+  - include: { relativeToChangelogFile: true, file: changeset/schema/schema.yaml }
+
+  #Table rates
+  - include: { relativeToChangelogFile: true, file: changeset/users/users.yaml }
+
+  #Table users_accounts
+  - include: { relativeToChangelogFile: true, file: changeset/users_accounts/users_accounts.yaml }
