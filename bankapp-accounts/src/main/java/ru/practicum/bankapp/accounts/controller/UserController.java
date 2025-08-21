@@ -68,15 +68,15 @@ public class UserController {
     @PostMapping(AccountsUrls.User.Cash.FULL)
     public ResponseEntity<Void> runCashTransaction(@RequestBody @Valid CashOperationDto cashOperationDto,
                                                    @RequestHeader(CustomHeaders.USER_LOGIN) String login) {
-
-        return ResponseEntity.ok(accountService.runCashTransaction(login, cashOperationDto));
+        accountService.runCashTransaction(login, cashOperationDto);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(AccountsUrls.User.Transfer.FULL)
     public ResponseEntity<Void> runTransferTransaction(@RequestBody @Valid TransferTransactionDto dto,
                                                        @RequestHeader(CustomHeaders.USER_LOGIN) String login) {
-
-        return ResponseEntity.ok(accountService.runTransferTransaction(login, dto));
+        accountService.runTransferTransaction(login, dto);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping(AccountsUrls.User.Profile.FULL)

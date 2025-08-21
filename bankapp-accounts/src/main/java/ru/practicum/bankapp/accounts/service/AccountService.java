@@ -16,9 +16,9 @@ public interface AccountService {
 
     AccountsChangeResult changeUserAccounts(String login, UserAccountsDto userAccountsDto);
 
-    Void runCashTransaction(String login, CashOperationDto cashOperationDto);
+    void runCashTransaction(String login, CashOperationDto cashOperationDto);
 
-    Void runTransferTransaction(String login, TransferTransactionDto dto);
+    void runTransferTransaction(String login, TransferTransactionDto dto);
 
     UserProfileDto getUserProfile(String login);
 

@@ -82,7 +82,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public Void runCashTransaction(String login, CashOperationDto operationDto) {
+    public void runCashTransaction(String login, CashOperationDto operationDto) {
         log.info("Начало транзакции пользователя {} по выполнению операции с наличными {}", login, operationDto);
         var account = accountRepository.findOneByUserLoginAndCurrencyAndActiveTrue(login, operationDto.getCurrency())
                 .orElseThrow(() -> new NotFoundException("Не найден активный счет пользователя"));
@@ -96,12 +96,11 @@ public class AccountServiceImpl implements AccountService {
         long accountValue = account.getValue();
         account.setValue(accountValue + operationDto.getAction().getMultiple() * operationValue);
         log.info("Транзакция по операции с наличными {} завершена", operationDto);
-        return null;
     }
 
     @Override
     @Transactional
-    public Void runTransferTransaction(String login, TransferTransactionDto dto) {
+    public void runTransferTransaction(String login, TransferTransactionDto dto) {
         log.info("Начало транзакции пользователя {} по выполнению перевода средств {}", login, dto);
         var accountFrom = accountRepository.findOneByUserLoginAndCurrencyAndActiveTrue(login, dto.getCurrencyFrom())
                 .orElseThrow(() -> new NotFoundException("Не найден активный счет для списания"));
@@ -118,7 +117,6 @@ public class AccountServiceImpl implements AccountService {
         accountFrom.setValue(accountFrom.getValue() - valueFrom);
         accountTo.setValue(accountTo.getValue() + UtilMoney.toPriceInternal(dto.getValueTo()));
         log.info("Транзакция по переводу средств {} завершена", dto);
-        return null;
     }
 
     @Override
